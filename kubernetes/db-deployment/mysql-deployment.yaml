@@ -21,7 +21,7 @@ spec:
         tier: database
     spec:
       containers:
-        - image: mysql:8.0.33 # docker hub image
+        - image: mysql:5.7 # docker hub image
           args:
             - "--ignore-db-dir=lost+found" 
           name: mysql
@@ -35,7 +35,7 @@ spec:
             - name: MYSQL_DATABASE 
               valueFrom :
                 configMapKeyRef :
-                  name : db-config      # From congifMap YAML
+                  name : db-config      # From secret YAML
                   key :  dbName
 
 
