@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: springboot-products-deployment
+spec:
+  selector:
+    matchLabels:
+      app: springboot-products-api
+  replicas: 4
+  strategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: springboot-products-api
+        tier: service-api
+    spec:
+      containers:
+        - name: springboot-products-k8s
+          image: paraskochar/springboot-products-k8s:3.0
+          ports:
+            - containerPort: 8080
+          env:   #  Enviornmental Variables
+            - name: DB_HOST   # Database host address from configMap
+              valueFrom :
+                configMapKeyRef :
+                  name : db-config
+                  key :  host
+
+            - name: DB_NAME  #  Database name from configMap
+              valueFrom :
+                configMapKeyRef :
+                  name : db-config
+                  key :  dbName
+
+            - name: DB_USERNAME  # Database username from Secret
+              valueFrom :
+                secretKeyRef :
+                  name : mysql-secrets
+                  key :  username
+
+            - name: DB_PASSWORD #Database password from Secret
+              valueFrom :
+                secretKeyRef :
+                  name : mysql-secrets
+                  key :  password
+
+
+

@@ -1,0 +1,15 @@
+apiVersion: v1 # Kubernetes API version
+kind: Service # Kubernetes resource kind we are creating
+metadata: 
+  name: springboot-products-svc
+  labels:
+        app: springboot-products-api
+        tier: service-api
+spec:
+  selector:
+    app: springboot-products-api
+  ports:
+    - protocol: "TCP"
+      port: 8080
+      targetPort: 8080 
+  type: LoadBalancer 

@@ -1,0 +1,18 @@
+#This service expose mysql to Other Services
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql #DNS as hostname
+  labels:
+    app: mysql-api 
+    tier: database
+spec:
+  type: ClusterIP
+  ports:
+    - port: 3306
+      targetPort: 3306
+  selector:       
+    app: mysql-api 
+    tier: database
+  clusterIP: None  # As We are using DNS, So ClusterIP is not relevant. Moreover we are using only 1 pod
+                   # so no need for Loadbalancing through clusterIP
