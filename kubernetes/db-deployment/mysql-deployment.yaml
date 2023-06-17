@@ -16,12 +16,12 @@ spec:
     type: Recreate
   template:
     metadata:
-      labels: 
+      labels: # It should match Service and Deployment selectors
         app: mysql-api
         tier: database
     spec:
       containers:
-        - image: mysql:8.0.33 
+        - image: mysql:8.0.33 # docker hub image
           args:
             - "--ignore-db-dir=lost+found" 
           name: mysql
@@ -29,20 +29,20 @@ spec:
             - name: MYSQL_ROOT_PASSWORD
               valueFrom :
                 secretKeyRef :
-                  name : mysql-secrets
+                  name : mysql-secrets  # From secret YAML
                   key :  password
 
             - name: MYSQL_DATABASE 
               valueFrom :
                 configMapKeyRef :
-                  name : db-config
+                  name : db-config      # From congifMap YAML
                   key :  dbName
 
 
           ports:
             - containerPort: 3306
               name: mysql-pv
-          volumeMounts:       
+          volumeMounts:       # Mounting voulume obtained from Persistent Volume Claim
             - name: mysql-persistent-storage
               mountPath: /var/lib/mysql 
             
